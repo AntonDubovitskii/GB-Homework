@@ -9,37 +9,37 @@ def convert_list_in_str(list_in: list) -> str:
     # Необходимо обработать все целые числа - добавить ковычки и привести к требуемому формату. Для этого
     # выполняется проверка - либо в элементе уже число, либо число все начиная со второго символа, но в таком случае
     # первым символом должен быть + или -
-    while i < len(my_list):
-        if my_list[i].isdigit() or my_list[i][1::].isdigit() and (my_list[i][0] == '+' or my_list[i][0] == '-'):
+    while i < len(list_in):
+        if list_in[i].isdigit() or list_in[i][1::].isdigit() and (list_in[i][0] == '+' or list_in[i][0] == '-'):
 
             # Далее идет душераздирающий отвратительный костыль, но я что-то не могу придумать как сделать иначе.
             # В случае если элемент содержит одну цифру со знаком, значение знака сохраняется и после форматирования
             # строки встраивается туда отдельно.
             # if len(my_list[i]) < 3 and (my_list[i][0] == '+' or my_list[i][0] == '-'):
-            if my_list[i][0] == '+' or my_list[i][0] == '-':
-                char = my_list[i][0]
+            if list_in[i][0] == '+' or list_in[i][0] == '-':
+                char = list_in[i][0]
 
-            my_list[i] = f'{int(my_list[i]):02d}'      # числа приводятся в требуемый вид
+            list_in[i] = f'{int(list_in[i]):02d}'      # числа приводятся в требуемый вид
 
-            if char != '' and my_list[i][0].isdigit():
-                my_list[i] = f'{char}{my_list[i]}'     # возврат знака, если он был
+            if char != '' and list_in[i][0].isdigit():
+                list_in[i] = f'{char}{list_in[i]}'     # возврат знака, если он был
                 char = ''
 
-            my_list.insert(i + 1, '\"')
-            my_list.insert(i, '\"')        # вставка в список элементов с ковычками
+            list_in.insert(i + 1, '\"')
+            list_in.insert(i, '\"')        # вставка в список элементов с ковычками
             i += 2
         i += 1
 
     # формирование строки на основе списка. Здесь тоже проблемно, так и не смог сообразить, как сделать красиво
     # например через join, чтобы не было лишних пробело между ковычками. Поэтому сделал грубо, но это работает
-    while x < len(my_list):
-        if my_list[x] == '\"':
-            str_out += my_list[x]
-            str_out += my_list[x + 1]
-            str_out += f'{my_list[x + 2]} '
+    while x < len(list_in):
+        if list_in[x] == '\"':
+            str_out += list_in[x]
+            str_out += list_in[x + 1]
+            str_out += f'{list_in[x + 2]} '
             x += 2
         else:
-            str_out += f'{my_list[x]} '
+            str_out += f'{list_in[x]} '
         x += 1
 
     return str_out

@@ -6,7 +6,7 @@ def transfer_list_in_str(list_in: list) -> str:
         формирует из них единую строковую переменную разделяя значения запятой."""
     str_out = ''
 
-    for item in my_list:
+    for item in list_in:
         str_out += f'{int(item):02d} руб {int((str(item * 100))[2:4:]):02d} коп, '
 
     return str_out
@@ -21,9 +21,9 @@ print(result_1)
 def sort_prices(list_in: list) -> list:
     """Сортирует вещественные числа по возрастанию, не создавая нового списка"""
 
-    print(f'{id(my_list)} - изначальный идентификатор списка')
-    my_list.sort()
-    return my_list
+    print(f'{id(list_in)} - изначальный идентификатор списка')
+    list_in.sort()
+    return list_in
 
 
 result_2 = sort_prices(my_list)
@@ -35,7 +35,7 @@ print(result_2)
 def sort_price_adv(list_in: list) -> list:
     """Создаёт новый список и возвращает список с элементами по убыванию"""
 
-    list_out = sorted(my_list, reverse=True)
+    list_out = sorted(list_in, reverse=True)
     return list_out
 
 
@@ -46,7 +46,7 @@ print(result_3)
 def check_five_max_elements(list_in: list) -> list:
     """Проверяет элементы входного списка вещественных чисел и возвращает
         список из ПЯТИ максимальных значений"""
-    list_out = sorted(my_list)
+    list_out = sorted(list_in)
 
     return list_out[len(list_out) - 5: len(list_out)]
 
