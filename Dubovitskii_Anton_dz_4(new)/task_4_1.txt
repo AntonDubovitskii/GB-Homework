@@ -1,0 +1,83 @@
+a. Проверить, установлен ли пакет pillow в глобальном окружении. Если да — зафиксировать версию.
+
+C:\Users\Антон\PycharmProjects\GB-Homework>pip show pillow
+WARNING: Package(s) not found: pillow
+
+Пакет изначально в глобальном окружении не установлен.
+
+--------------------------------------------------------------------------------------------------
+
+b. Установить самую свежую версию pillow, если ранее она не была установлена.
+
+C:\Users\Антон\PycharmProjects\GB-Homework>pip install pillow
+Collecting pillow
+  Using cached Pillow-9.0.0-cp310-cp310-win_amd64.whl (3.2 MB)
+Installing collected packages: pillow
+Successfully installed pillow-9.0.0
+
+Версия pillow 9.0.0 установлена в глобальную среду.
+
+Проверка:
+
+C:\Users\Антон\PycharmProjects\GB-Homework>pip show pillow
+Name: Pillow
+Version: 9.0.0
+Summary: Python Imaging Library (Fork)
+Home-page: https://python-pillow.org
+Author: Alex Clark (PIL Fork Author)
+Author-email: aclark@python-pillow.org
+License: HPND
+Location: c:\python310\lib\site-packages
+Requires:
+Required-by:
+
+---------------------------------------------------------------------------------------------------
+
+с. Создать и активировать виртуальное окружение. Убедиться, что в нем нет пакета pillow.
+
+Для задания создано и активировано виртуальное окружение virt:
+
+C:\Users\Антон\PycharmProjects\GB-Homework>python -m venv virt
+C:\Users\Антон\PycharmProjects\GB-Homework>"virt/Scripts/activate.bat"
+
+В виртуальном окружении пакета pillow нет:
+
+(virt) C:\Users\Антон\PycharmProjects\GB-Homework>deactivate
+C:\Users\Антон\PycharmProjects\GB-Homework>pip show pillow
+WARNING: Package(s) not found: pillow
+
+---------------------------------------------------------------------------------------------------
+
+d. Установить в виртуальное окружение pillow версии 7.1.1 (или другой, отличной от самой свежей).
+
+(virt) C:\Users\Антон\PycharmProjects\GB-Homework>pip install pillow==8.4
+Collecting pillow==8.4
+  Downloading Pillow-8.4.0-cp310-cp310-win_amd64.whl (3.2 MB)
+     |████████████████████████████████| 3.2 MB 1.1 MB/s
+Installing collected packages: pillow
+Successfully installed pillow-8.4.0
+
+Версия pillow 8.4.0 установлена в виртуальную среду virt.
+
+Проверка:
+
+(virt) C:\Users\Антон\PycharmProjects\GB-Homework>pip show pillow
+Name: Pillow
+Version: 8.4.0
+Summary: Python Imaging Library (Fork)
+Home-page: https://python-pillow.org
+Author: Alex Clark (PIL Fork Author)
+Author-email: aclark@python-pillow.org
+License: HPND
+Location: c:\users\антон\pycharmprojects\gb-homework\virt\lib\site-packages
+Requires:
+Required-by:
+
+--------------------------------------------------------------------------------------------------
+
+e. Деактивировать виртуальное окружение.
+
+(virt) C:\Users\Антон\PycharmProjects\GB-Homework>deactivate
+C:\Users\Антон\PycharmProjects\GB-Homework>
+
+Виртуальное окружение деактивировано.
