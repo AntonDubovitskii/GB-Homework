@@ -16,7 +16,6 @@ def main(argv):
     if value.replace('.', '').isdigit() or value.replace(',', '').isdigit():     # Проверка ввода
         with open('bakery.csv', 'a', encoding='utf-8') as f:
             f.write(f'{value}\n')
-            print(value)
     else:
         print('Некорректный ввод! Необходимо ввести вещественное или целое значение')
         sys.exit(1)
