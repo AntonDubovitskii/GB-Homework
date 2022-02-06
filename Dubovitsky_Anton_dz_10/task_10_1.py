@@ -19,11 +19,15 @@ class Matrix:
         return mat_str
 
     def __add__(self, other):
-        new_matrix = self.matrix
-        for x in range(len(new_matrix)):
-            for y in range(len(new_matrix[0])):
-                new_matrix[x][y] += other.matrix[x][y]
-        return Matrix(new_matrix)
+        # Для сложения матрицы должны быть одинакового размера
+        if len(self.matrix[0]) == len(other.matrix[0]) and len(self.matrix) == len(other.matrix):
+            new_matrix = self.matrix
+            for x in range(len(new_matrix)):
+                for y in range(len(new_matrix[0])):
+                    new_matrix[x][y] += other.matrix[x][y]
+            return Matrix(new_matrix)
+        else:
+            raise ValueError('wrong matrix size')
 
 
 if __name__ == '__main__':
