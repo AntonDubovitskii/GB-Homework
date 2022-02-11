@@ -6,6 +6,7 @@
 Класс-исключение должен контролировать типы данных элементов списка.
 """
 
+
 class NotNumber(Exception):
     def __init__(self, txt):
         self.txt = txt

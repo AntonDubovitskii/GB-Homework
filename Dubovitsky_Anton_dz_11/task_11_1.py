@@ -7,6 +7,7 @@
 Проверить работу полученной структуры на реальных данных.
 """
 
+
 class Date:
     def __init__(self, date_str: str):
         self.date_str = date_str
