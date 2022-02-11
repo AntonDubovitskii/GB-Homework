@@ -11,7 +11,9 @@
 Реализовать механизм валидации вводимых пользователем данных.
 Например, для указания количества принтеров, отправленных на склад, нельзя использовать строковый тип данных!
 """
+
 import random
+from collections import Counter
 
 
 class EquipmentPurchase:
@@ -29,19 +31,34 @@ class Warehouse:
         self.address = address
         self.storage = {}
 
+    def check_storage(warehouse):
+        check_list = []
+        for eq in warehouse.storage.values():
+            check_list.append(eq)
+        x = Counter(check_list)
+        print(f'\nКоличество оборудования на складе по адресу {warehouse.address}:')
+        for a, b in x.items():
+            print(a, b)
+
     def add_equipment(self, supply):
         self.count = 0
-        for equipment in supply:
-            if not isinstance(equipment, OfficeEquipment):
-                print('Ошибка, склад предназначен для хранения офисного оборудования')
-                continue
-            self.storage.setdefault(equipment.equipment_code, equipment.equipment_type)
-            self.count += 1
-            self.capacity -= 1
-            if self.capacity == 0:
-                print('Склад заполнен!')
-                break
-        print(f'На склад отправлено {self.count} единиц оборудования, осталось место для {self.capacity} единиц')
+        try:
+            for equipment in supply:
+                if not isinstance(equipment, OfficeEquipment):
+                    print('Ошибка, склад предназначен для хранения офисного оборудования')
+                    continue
+                if self.capacity > 0:
+                    self.storage.setdefault(equipment.equipment_code, equipment.equipment_type)
+                    self.count += 1
+                    self.capacity -= 1
+                else:
+                    print(f'Склад по адресу "{self.address}" заполнен!')
+                    break
+        except TypeError:
+            print('Ошибка составления запроса на поставку')
+
+        print(f'На склад по адресу "{self.address}" отправлено {self.count} единиц оборудования, осталось место для'
+              f' {self.capacity} единиц')
 
     def send_to_department(self, equipment_type: str, quantity: int, department: str):
         self.send_count = 0
@@ -55,7 +72,9 @@ class Warehouse:
                     break
         for code in self.send_list:
             self.storage.pop(code)
-        print(f'{self.count} единиц {equipment_type} отправилось в {department}')
+        self.capacity += len(self.send_list)
+        print(f'{self.send_count} единиц {equipment_type} отправилось со склада по адресу "{self.address}" '
+              f'в {department}')
         if quantity > 0:
             print(f'На складе недостаточно требуемого оборудования. {self.send_count} единиц {equipment_type} '
                   f'отправилось в {department} Ещё {quantity} единиц {equipment_type} необходимо приобрести')
@@ -100,18 +119,69 @@ class Shredder(OfficeEquipment):
 
 
 if __name__ == '__main__':
-    pr1 = Printer('g4684', 5000, 'Laser')
-    pr2 = Printer('1dsf4', 5000, 'Laser')
-    pr3 = Printer('wvds6', 5000, 'Laser')
-    pr4 = Printer('weev5', 5000, 'Laser')
-    pr5 = Printer('dsvvv', 5000, 'Laser')
-    pr6 = Printer('234fs', 5000, 'Laser')
+    pr1 = [Printer('g4684', 5000, 'Laser'), Printer('1dsf4', 5000, 'Laser'), Printer('wvds6', 5000, 'Laser')]
+    pr2 = [Printer('weev5', 5000, 'Laser'), Printer('dsvvv', 5000, 'Laser')]
+    pr3 = [Printer('234fs', 5000, 'Laser')]
 
     wh1 = Warehouse('Город С. Улица Пушкина 28', 20)
-    # wh1.add_equipment(pr1, pr2, pr3, pr4, pr5, pr6)
+    wh2 = Warehouse('Город М. Улица Молдавских Строителей 109', 30)
+
+    wh1.add_equipment(pr1)
+    wh1.add_equipment(pr2)
+    wh2.add_equipment(pr3)
 
     supply1 = EquipmentPurchase.buy_from_supplier(Scanner, 6)
-
+    supply2 = EquipmentPurchase.buy_from_supplier(MFP, 4)
+    supply3 = EquipmentPurchase.buy_from_supplier(MFP, 100)
     wh1.add_equipment(supply1)
+    wh2.add_equipment(supply2)
+    wh1.add_equipment(supply3)
 
+    print('-' * 150)
+    Warehouse.check_storage(wh1)
+    Warehouse.check_storage(wh2)
+
+    print('-'*150)
     wh1.send_to_department('Принтер', 8, 'отделение в городе С.')
+    wh1.send_to_department('МФУ', 9, 'офис в городe М.')
+    wh2.send_to_department('МФУ', 3, 'отделение в городе С.')
+
+    print('-' * 150)
+    Warehouse.check_storage(wh1)
+
+    supply8 = EquipmentPurchase.buy_from_supplier(Shredder, 10)
+    wh1.add_equipment(supply8)
+
+"""
+На склад по адресу "Город С. Улица Пушкина 28" отправлено 3 единиц оборудования, осталось место для 17 единиц
+На склад по адресу "Город С. Улица Пушкина 28" отправлено 2 единиц оборудования, осталось место для 15 единиц
+На склад по адресу "Город М. Улица Молдавских Строителей 109" отправлено 1 единиц оборудования, осталось место для 29 единиц
+На склад по адресу "Город С. Улица Пушкина 28" отправлено 6 единиц оборудования, осталось место для 9 единиц
+На склад по адресу "Город М. Улица Молдавских Строителей 109" отправлено 4 единиц оборудования, осталось место для 25 единиц
+Склад по адресу "Город С. Улица Пушкина 28" заполнен!
+На склад по адресу "Город С. Улица Пушкина 28" отправлено 9 единиц оборудования, осталось место для 0 единиц
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Количество оборудования на складе по адресу Город С. Улица Пушкина 28:
+Принтер 5
+Сканер 6
+МФУ 9
+
+Количество оборудования на складе по адресу Город М. Улица Молдавских Строителей 109:
+Принтер 1
+МФУ 4
+------------------------------------------------------------------------------------------------------------------------------------------------------
+5 единиц Принтер отправилось со склада по адресу "Город С. Улица Пушкина 28" в отделение в городе С.
+На складе недостаточно требуемого оборудования. 5 единиц Принтер отправилось в отделение в городе С. Ещё 3 единиц Принтер необходимо приобрести
+9 единиц МФУ отправилось со склада по адресу "Город С. Улица Пушкина 28" в офис в городe М.
+3 единиц МФУ отправилось со склада по адресу "Город М. Улица Молдавских Строителей 109" в отделение в городе С.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Количество оборудования на складе по адресу Город С. Улица Пушкина 28:
+Сканер 6
+На склад по адресу "Город С. Улица Пушкина 28" отправлено 10 единиц оборудования, осталось место для 4 единиц
+
+Process finished with exit code 0
+"""
+
+
